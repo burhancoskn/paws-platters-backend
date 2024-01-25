@@ -25,11 +25,11 @@ const port = process.env.PORT || 3000;
 client.on("connected", () => {  
   console.log("Connected to MongoDB");
 
-  app.listen(port, () => {
-    console.log(`Server listening to ${port}`);
-  });
+  const ports = [process.env.PORT || 3000, 80];
 
-  app.listen(80, () => {
-    console.log("CORS-enabled web server listening on port 80");
+  ports.forEach(port => {
+    app.listen(port, () => {
+      console.log(`Server listening to ${port}`);
+    });
   });
 });

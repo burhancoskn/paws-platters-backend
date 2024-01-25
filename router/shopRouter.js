@@ -62,7 +62,40 @@ shopRouter.post('/categories', async (req, res) => {
     res.status(500).json({ error: 'Error creating Category' });
   }
 });
+// PUT (update) a product by ID
+shopRouter.put('/:id', getProduct, async (req, res) => {
+  const productId = req.params.id;
 
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true });
+
+    if (updatedProduct) {
+      res.status(200).json(updatedProduct);
+    } else {
+      res.status(404).json({ error: 'Product not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating product' });
+  }
+});
+
+shopRouter.put('/categories/:id', async (req, res) => {
+  console.log('PUT /categories/:id route reached');
+
+  const categoryId = req.params.id;
+
+  try {
+    const updatedCategory = await Category.findByIdAndUpdate(categoryId, req.body, { new: true });
+
+    if (updatedCategory) {
+      res.status(200).json(updatedCategory);
+    } else {
+      res.status(404).json({ error: 'Category not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating category' });
+  }
+});
 // DELETE a product by ID
 shopRouter.delete('/:id', getProduct, async (req, res) => {
   try {
@@ -72,6 +105,7 @@ shopRouter.delete('/:id', getProduct, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 shopRouter.delete('/categories/:id', async (req, res) => {
   const categoryId = req.params.categoryId;
 
